@@ -11,8 +11,17 @@
 
 // module.exports.handler = serverless(http.createServer(app));
 
-const { parse } = require('urltel')
 const { get } = require('axios')
+
+function parseUrlTel(urlString) {
+  // 解析URL
+  const urlObj = url.parse(urlString)
+  // 查询参数对象
+  const queryObj = new URLSearchParams(urlObj.query)
+  // 尝试从查询参数中获取tel
+  const tel = queryObj.get('tel')
+  return tel || null
+}
 
 exports.handler = async (event, context) => {
   const { httpMethod, queryStringParameters } = event
@@ -34,7 +43,7 @@ exports.handler = async (event, context) => {
     }
 
     const { data } = await get(
-      `https://api.live.bilibili.com/xlive/web-room/v1/gift/bag_list?${parse(
+      `https://api.live.bilibili.com/xlive/web-room/v1/gift/bag_list?${parseUrlTel(
         queryStringParameters
       )}`,
       {
