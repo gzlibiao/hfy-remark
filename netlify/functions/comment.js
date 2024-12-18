@@ -13,15 +13,6 @@ const app = Waline({
     }
     return 'https://jf-temp-1301446188.cos.ap-guangzhou.myqcloud.com/logo1'
   },
-  // 每秒允许的请求次数
-  IPQPS: 0,
-
-  // 限制某个 IP 在 1 小时内最多提交评论次数
-  maxAge: 60 * 60 * 1000, // 1 小时
-
-  // 是否启用 IP 限制
-  enable: true,
-
   async postSave(comment) {
     console.log('comm', comment)
 
