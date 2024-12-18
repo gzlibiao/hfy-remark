@@ -9,7 +9,8 @@ const app = Waline({
     verify: false, // 禁用验证码（防止评论频繁需要输入验证码）
     moderation: false, // 禁用评论审核（减少进入审核队列的校验）
     // 其他校验相关的配置项，如垃圾评论防护等
-    akismet: false // 禁用 Akismet 垃圾评论防护（如果该功能有开启）
+    akismet: false, // 禁用 Akismet 垃圾评论防护（如果该功能有开启）
+    throttle: false // 禁用评论频率限制（解决“Comment too fast”问题）
   },
   async postSave(comment) {
     // do what ever you want after save comment
