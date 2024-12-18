@@ -13,6 +13,7 @@ const app = Waline({
     }
     return 'https://jf-temp-1301446188.cos.ap-guangzhou.myqcloud.com/logo1'
   },
+  IPQPS: process.env.IPQPS || 5, // 默认值为 5
   async postSave(comment) {
     console.log('comm', comment)
 
@@ -20,3 +21,7 @@ const app = Waline({
   }
 })
 module.exports.handler = serverless(http.createServer(app))
+
+module.exports = {
+  IPQPS: process.env.IPQPS || 5 // 默认值为 5
+}
