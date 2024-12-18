@@ -20,8 +20,7 @@ const app = Waline({
     // do what ever you want after save comment
   }
 })
-module.exports.handler = serverless(http.createServer(app))
-
 module.exports = {
+  handler: serverless(http.createServer(app)),
   IPQPS: process.env.IPQPS || 5 // 默认值为 5
 }
