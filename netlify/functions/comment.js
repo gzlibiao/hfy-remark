@@ -4,32 +4,28 @@ const serverless = require('serverless-http')
 
 const app = Waline({
   env: 'netlify',
-  handler: async (req, res) => {
-    if (req.method === 'POST') {
-      const userIp = getClientIp(req) // 获取用户的 IP 地址
-      console.log(userIp, 'userIp"')
-
-      // 提交评论
-      try {
-        const comment = req.body
-
-        // 将评论保存到 Waline 服务
-        await waline.comment.create(comment)
-
-        // 更新用户的上次评论时间
-        await setLastCommentTime(userIp, currentTime)
-
-        return res.status(200).json({ message: 'Comment submitted successfully!' })
-      } catch (error) {
-        return res.status(500).json({ message: 'Failed to submit comment', error })
-      }
-    } else {
-      return res.status(405).json({ message: 'Method Not Allowed' })
+  async avatarUrl(comment) {
+    const reg = new RegExp('(\\d+)@qq\\.com$', 'i')
+    const mail = comment.mail
+    if (reg.test(mail)) {
+      const q = mail.replace(/@qq\.com/i, '').toLowerCase()
+      return 'https://q1.qlogo.cn/headimg_dl?dst_uin=' + q + '&spec=4'
     }
+    return 'https://jf-temp-1301446188.cos.ap-guangzhou.myqcloud.com/logo1'
   },
+  // 每秒允许的请求次数
+  IPQPS: 0,
+
+  // 限制某个 IP 在 1 小时内最多提交评论次数
+  maxAge: 60 * 60 * 1000, // 1 小时
+
+  // 是否启用 IP 限制
+  enable: true,
+
   async postSave(comment) {
+    console.log('comm', comment)
+
     // do what ever you want after save comment
   }
 })
-
 module.exports.handler = serverless(http.createServer(app))
